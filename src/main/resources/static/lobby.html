@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <style>
+        html{
+            height: 90%;
+        }
+        body{
+            width: 99%;
+            height: 90%;
+            text-align: center;
+        }
+        .center{
+            vertical-align: middle;
+            display: inline-block;
+            height: 300px;
+            width: 200px;
+        }
+        .middle{
+            height: 300px;
+            width: 200px;
+            display: grid;
+            align-items: center;
+        }
+        table {
+            width: 100%;
+            border: 1px solid #444444;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #444444;
+        }
+        .match{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <div class="middle">
+            <div class="lobby">
+                <h3>User Lobby</h3>
+                <div class="user_list">
+                    <table id="user_list">
+                        <thead>
+                            <tr>
+                                <td>User ID</td><td>Rating</td>
+                            </tr>
+                        </thead>
+                        <tbody id="user_list_body">
+                            <tr>
+                                <td>player 1</td><td>1200</td>
+                            </tr>
+                            <tr>
+                                <td>player 2</td><td>2300</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="buttons_area">
+                    <input type="button" id="play_match" value="PlayGame">
+                </div>
+            </div>
+            <div class="match">
+                <h2>Searching...</h2>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="application/javascript">
+
+    (function () {
+        $("#play_match").on("click", searchingMatchUseAjax);
+        //$("#play_match").on("click", searchingMatch);
+    })()
+
+    //매칭 찾는 함수
+    function searchingMatch() {
+        //로비 숨기고
+        $(".lobby").hide();
+        $(".match").show();
+
+
+        var limit = 0;
+
+        //이 Interval을 나중에는 ajax로 바꿀 것
+        var toggle = setInterval(function () {
+            limit += 1;
+            $(".match>h2").text("Searching...(" + limit +"s)");
+            if(limit > 5){
+                clearInterval(toggle);
+
+                //여기는 나중에 ajax error callback에 넣을 것
+                $(".match>h2").text("Matching Failed");
+                setTimeout(function () {
+                    $(".match").hide();
+                    $(".lobby").show();
+                }, 1000);
+            }
+        }, 1000)
+    }
+
+    //매칭 찾는 함수
+    function searchingMatchUseAjax() {
+        //로비 숨기고
+        $(".lobby").hide();
+        $(".match").show();
+
+
+        $.ajax({
+            url:"",
+            method:"get",
+            contentType : "application/json",
+            data: "",
+            success : function (e) {
+                //성공 시
+                showLobby();
+            },
+            error : function (e) {
+                //실패 시
+                alert(e.errorDetail);
+                showLobby();
+            }
+        });
+    }
+
+    function hideLobby() {
+        $(".lobby").hide();
+        $(".match").show();
+    }
+
+    function showLobby() {
+        $(".lobby").show();
+        $(".match").hide();
+    }
+
+</script>
+</html>

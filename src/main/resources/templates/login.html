@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <style>
+        html{
+            height: 90%;
+        }
+        body{
+            width: 99%;
+            height: 90%;
+            text-align: center;
+        }
+        .center{
+            vertical-align: middle;
+            display: inline-block;
+            height: 300px;
+            width: 200px;
+        }
+        .middle{
+            height: 300px;
+            width: 200px;
+            display: grid;
+            align-items: center;
+        }
+        .user_account_area{
+            height: 150px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <div class="middle">
+            <h3>Hello Login</h3>
+            <div class="user_account_area">
+                <input type="text" id="user_id" placeholder="ID">
+                <input type="password" id="user_passwd" placeholder="Password">
+            </div>
+            <input type="button" id="login" value="Login">
+        </div>
+    </div>
+</body>
+    <script type="application/javascript">
+        $("#login").on("click", function () {
+            var userData = {};
+            userData.username = $("#user_id").val();
+            userData.password = $("#user_passwd").val();
+
+            //콘솔에서 입력 값 확인가능
+            console.log(JSON.stringify(userData));
+
+            $.ajax({
+                url:"http://localhost:8080/user/login",
+                method:"post",
+                contentType : "application/json",
+                data: JSON.stringify(userData),
+                success : function (request) {
+                    alert("code:" + request.status + "\n" + "message:"+request.message + "\n" + "error:"+request.error);
+                    //로그인 성공했을 때 행동
+                },
+                error:function(request, status, error){
+                    alert("code:" + request.status + "\n" + "message:"+request.responseText + "\n" + "error:"+error);
+                }
+
+            });
+        });
+    </script>
+</html>
