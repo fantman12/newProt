@@ -26,11 +26,11 @@ public class SecurityConfigV2 extends WebSecurityConfigurerAdapter {
     @Value("${jwt.secret}")
     private String secret;
 
-    @Autowired
-    private JwtUtils jwtUtils;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
+//    @Autowired
+//    private JwtUtils jwtUtils;
+//
+//    @Autowired
+//    private AuthenticationManager authenticationManager;
 
     @Autowired UserService userService;
 
@@ -46,9 +46,9 @@ public class SecurityConfigV2 extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").hasAuthority("ROLE_USER")
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().permitAll()
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter((AuthenticationManager) authenticationManager, jwtUtils),
-                        UsernamePasswordAuthenticationFilter.class);
+                .and();
+//                .addFilterBefore(new JwtAuthenticationFilter((AuthenticationManager) authenticationManager, jwtUtils),
+//                        UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
