@@ -26,46 +26,46 @@ public class SecurityConfigV2 extends WebSecurityConfigurerAdapter {
     @Value("${jwt.secret}")
     private String secret;
 
-//    @Autowired
-//    private JwtUtils jwtUtils;
-//
-//    @Autowired
-//    private AuthenticationManager authenticationManager;
-//
-//    @Autowired UserService userService;
-//
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        System.out.println("configure");
-//        http
-//                .httpBasic().disable()
-//                .csrf().disable()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .authorizeRequests() // 요청에 대한 사용권한 체크
-//                .antMatchers("/user/**").hasAuthority("ROLE_USER")
-//                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-//                .anyRequest().permitAll()
-//                .and()
-//                .addFilterBefore(new JwtAuthenticationFilter((AuthenticationManager) authenticationManager, jwtUtils),
-//                        UsernamePasswordAuthenticationFilter.class);
-//    }
-//
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userService).passwordEncoder(userService.passwordEncoder());
-//    }
-//
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
-//
-//    @Bean
-//    public JwtUtils jwtUtils() {
-//        return new JwtUtils(secret);
-//    }
+    @Autowired
+    private JwtUtils jwtUtils;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired UserService userService;
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        System.out.println("configure");
+        http
+                .httpBasic().disable()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests() // 요청에 대한 사용권한 체크
+                .antMatchers("/user/**").hasAuthority("ROLE_USER")
+                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                .anyRequest().permitAll()
+                .and()
+                .addFilterBefore(new JwtAuthenticationFilter((AuthenticationManager) authenticationManager, jwtUtils),
+                        UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(userService.passwordEncoder());
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public JwtUtils jwtUtils() {
+        return new JwtUtils(secret);
+    }
 
 //    @Bean
 //    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {

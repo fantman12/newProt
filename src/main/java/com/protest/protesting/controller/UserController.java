@@ -24,39 +24,39 @@ import java.util.Date;
 public class UserController {
     @Autowired UserService userService;
 
-//    @Autowired AuthenticationManager authenticationManagers;
-//
-//    @Autowired private JwtUtils jwtUtils;
-//
-//
-//    @PostMapping(value = "/login")
-//    public ResponseEntity<ApiResponseEntity> login(@RequestBody AuthenticationRequest authenticationRequest, HttpServletRequest req) {
-//        String username = authenticationRequest.getUsername();
-//        String password = authenticationRequest.getPassword();
-//
-//        // User Scheme setting Required
-//        UsernamePasswordAuthenticationToken toekn = new UsernamePasswordAuthenticationToken(username, password);
-//        Authentication authentication = authenticationManagers.authenticate(toekn);
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//
-//        // session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
-//        User user = userService.readUser(username); // UserDetailsService의 readUser 활용
-//        // Jwt 형태
-//        String jwt = jwtUtils.createToken(username, user.getRoles());
-//
-//        ApiResponseEntity apiResponseEntity = new ApiResponseEntity(
-//                new Date(),
-//                HttpStatus.OK.value(),
-//                "",
-//                new AuthenticationToken(user.getName(), user.getAuthorities(), jwt),
-//                req.getRequestURI());
-//
-//        return new ResponseEntity<ApiResponseEntity>(apiResponseEntity, HttpStatus.OK);
-//
-//        // Jwt 리턴 구조 형태
-////        return new AuthenticationToken(user.getName(), user.getAuthorities(), jwt);
-//    }
+    @Autowired AuthenticationManager authenticationManagers;
+
+    @Autowired private JwtUtils jwtUtils;
+
+
+    @PostMapping(value = "/login")
+    public ResponseEntity<ApiResponseEntity> login(@RequestBody AuthenticationRequest authenticationRequest, HttpServletRequest req) {
+        String username = authenticationRequest.getUsername();
+        String password = authenticationRequest.getPassword();
+
+        // User Scheme setting Required
+        UsernamePasswordAuthenticationToken toekn = new UsernamePasswordAuthenticationToken(username, password);
+        Authentication authentication = authenticationManagers.authenticate(toekn);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
+        // session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+        User user = userService.readUser(username); // UserDetailsService의 readUser 활용
+        // Jwt 형태
+        String jwt = jwtUtils.createToken(username, user.getRoles());
+
+        ApiResponseEntity apiResponseEntity = new ApiResponseEntity(
+                new Date(),
+                HttpStatus.OK.value(),
+                "",
+                new AuthenticationToken(user.getName(), user.getAuthorities(), jwt),
+                req.getRequestURI());
+
+        return new ResponseEntity<ApiResponseEntity>(apiResponseEntity, HttpStatus.OK);
+
+        // Jwt 리턴 구조 형태
+//        return new AuthenticationToken(user.getName(), user.getAuthorities(), jwt);
+    }
 
 
 }
