@@ -7,11 +7,13 @@ import com.protest.protesting.entity.User;
 import com.protest.protesting.service.UserService;
 import com.protest.protesting.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +31,7 @@ import java.util.Date;
 
 @RestController
 public class UserController {
-    @Autowired AuthenticationManager authenticationManager;
+    @Autowired AuthenticationManager authenticationManagers;
     @Autowired UserService userService;
 
     @Autowired private JwtUtils jwtUtils;
@@ -39,10 +41,9 @@ public class UserController {
         String username = authenticationRequest.getUsername();
         String password = authenticationRequest.getPassword();
 
-
         // User Scheme setting Required
         UsernamePasswordAuthenticationToken toekn = new UsernamePasswordAuthenticationToken(username, password);
-        Authentication authentication = authenticationManager.authenticate(toekn);
+        Authentication authentication = authenticationManagers.authenticate(toekn);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
