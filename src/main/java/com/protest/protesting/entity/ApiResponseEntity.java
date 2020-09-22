@@ -21,14 +21,14 @@ public class ApiResponseEntity {
 //    private JSONObject message;
 
 //    변경
-    private Object message;
+    private Object data;
     private String path;
 
     public ApiResponseEntity(int status, String error, Object message, String path) {
         this.timestamp = new Date();
         this.status = status;
         this.error = error;
-        this.message = message;
+        this.data = message;
         this.path = path;
     }
 

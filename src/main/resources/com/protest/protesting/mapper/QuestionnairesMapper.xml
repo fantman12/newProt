@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.protest.protesting.mapper.QuestionnairesMapper">
+    <resultMap id="QuestionMap" type="com.protest.protesting.entity.QuestionnairesEntity">
+        <id property="seq" column="seq"/>
+        <id property="question" column="question"/>
+<!--        <id property="subQuestion" column="sub_question"/>-->
+<!--        <id property="isVisibled" column="is_visibled"/>-->
+<!--        <id property="orderedBy" column="ordered_by"/>-->
+<!--        <id property="createdAt" column="created_at"/>-->
+<!--        <id property="updatedAt" column="updated_at"/>-->
+<!--        <id property="isDeleted" column="is_deleted"/>-->
+
+    </resultMap>
+    <select id="selectQuestion" resultType="QuestionnairesEntity">
+        SELECT * FROM QUESTIONNAIRES
+        WHERE is_deleted = 0
+    </select>
+
+
+    <insert id="insertQuestion" parameterType="QuestionEntity">
+        INSERT INTO QUESTIONNAIRES (`question`, `sub_question`) VALUES (#{question}, #{subQuestion})
+    </insert>
+    
+    <update id="updateQuestion" parameterType="QuestionnairesEntity">
+        UPDATE QUESTIONNAIRES
+        SET `question` = #{question},
+        <if test='#{subQuestion} != null' >
+            `sub_question` = #{subQuestion}
+        </if>
+        WHERE `seq` = #{seq}
+    </update>
+
+    <update id="deleteQuestion" parameterType="QuestionnairesEntity">
+        UPDATE QUESTIONNAIRES SET is_deleted = 1 WHERE seq = #{seq}
+    </update>
+</mapper>

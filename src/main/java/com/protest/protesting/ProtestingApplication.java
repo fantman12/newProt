@@ -24,7 +24,6 @@ public class ProtestingApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
         SpringApplication.run(ProtestingApplication.class, args);
-//        subPing();
     }
 
     @Override

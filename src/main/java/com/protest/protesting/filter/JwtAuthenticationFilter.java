@@ -32,19 +32,15 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
-
-        System.out.println("filter");
         Principal tt = request.getUserPrincipal();
 
         // 헤더에서 JWT get
         String token = getAuthentication((HttpServletRequest) request);
-        if (token != null && jwtUtils.validateToken(token)) {
+        if (token != null && jwtUtils.isUsable(token)) {
             Authentication authentication = jwtUtils.getAuthentication(token);
 
-            System.out.println(authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-
         chain.doFilter(request, response);
     }
 
@@ -59,6 +55,6 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         }
         String resolveToken = jwtUtils.resolveToken((HttpServletRequest) request);
 
-        return token;
+        return resolveToken;
     }
 }

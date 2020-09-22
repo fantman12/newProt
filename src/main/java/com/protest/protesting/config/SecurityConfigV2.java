@@ -16,6 +16,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -26,13 +28,12 @@ public class SecurityConfigV2 extends WebSecurityConfigurerAdapter {
     @Value("${jwt.secret}")
     private String secret;
 
-//    @Autowired
-//    private JwtUtils jwtUtils;
-//
-//    @Autowired
-//    private AuthenticationManager authenticationManager;
+
+    @Autowired JwtUtils jwtUtils;
+    @Autowired AuthenticationManager authenticationManager;
 
     @Autowired UserService userService;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -44,11 +45,12 @@ public class SecurityConfigV2 extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests() // 요청에 대한 사용권한 체크
                 .antMatchers("/user/**").hasAuthority("ROLE_USER")
+                .antMatchers("/manager/**").hasAuthority("ROLE_USER")
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().permitAll()
-                .and();
-//                .addFilterBefore(new JwtAuthenticationFilter((AuthenticationManager) authenticationManager, jwtUtils),
-//                        UsernamePasswordAuthenticationFilter.class);
+                .and()
+                .addFilterBefore(new JwtAuthenticationFilter((AuthenticationManager) authenticationManager, jwtUtils),
+                        UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

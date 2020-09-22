@@ -44,6 +44,12 @@ public class PageController {
 //        NetworkInterface ttt = tt.getInetAddresses();
     }
 
+    @GetMapping(value = "/user/test")
+    public String testUser() {
+        System.out.println("aaaa");
+        return "aa";
+    }
+
 
     @PostMapping(value = "/userSingIn")
     public ResponseEntity<ApiResponseEntity> userSingIn(@RequestBody LoginEntity loginEntity){
@@ -51,8 +57,6 @@ public class PageController {
 
         jsonObject.put("email", loginEntity.getEmail());
         jsonObject.put("password", loginEntity.getPassword());
-
-
 
         ApiResponseEntity apiResponseEntity = new ApiResponseEntity(new Date(), HttpStatus.OK.value(), "", jsonObject, "");
 

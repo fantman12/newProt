@@ -43,7 +43,8 @@ public class UserController {
         // session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
         User user = userService.readUser(username); // UserDetailsService의 readUser 활용
         // Jwt 형태
-        String jwt = jwtUtils.createToken(username, user.getRoles());
+//        String jwt = jwtUtils.createToken(username, user.getRoles());
+        String jwt = jwtUtils.createJwt(username, user);
 
         ApiResponseEntity apiResponseEntity = new ApiResponseEntity(
                 new Date(),
