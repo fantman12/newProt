@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.protest.protesting.mapper.VisitorMapper">
+
+    <insert id="addVisitorInfo" parameterType="VisitorEntity">
+        INSERT INTO VISITORS (
+        `birthday`,
+        `name`,
+        `visited_at`,
+        `phone_number`,
+        `affiliation`,
+        `visit_purpose`,
+        `manager`,
+        `is_passed`
+        )
+        VALUES
+        (#{birthday},
+        #{name},
+        #{visitedAt},
+        #{phoneNumber},
+        #{affiliation},
+        #{visitPurpose},
+        #{manager},
+        #{isPassed}
+        );
+    </insert>
+    <select id="getVisitorCurrentInfo" parameterType="String" resultType="int">
+        <![CDATA[
+            SELECT COUNT(*) AS nowVisitor FROM VISITORS
+            WHERE visited_at >= #{startDate} AND visited_at <= #{endDate}
+        ]]>
+    </select>
+
+    <select id="getVisitorPassInfo" parameterType="String" resultType="int">
+        <![CDATA[
+            SELECT COUNT(is_passed) as is_passed FROM VISITORS
+            WHERE visited_at >= #{startDate} AND visited_at <= #{endDate}
+            AND is_passed = 1
+        ]]>
+    </select>
+
+    <select id="getVisitorUnPassInfo" parameterType="String" resultType="int">
+        <![CDATA[
+            SELECT COUNT(is_passed) as is_unPassed FROM VISITORS
+            WHERE visited_at >= #{startDate} AND visited_at <= #{endDate}
+            AND is_passed = 0
+        ]]>
+    </select>
+
+
+    <select id="getVisitorList" parameterType="VisitorListEntity" resultType="VisitorEntity">
+
+        SELECT * FROM
+        VISITORS
+
+        <if test='startDate != null'>
+            <![CDATA[ WHERE visited_at >= #{startDate} AND visited_at <= #{endDate}]]>
+            <if test='keyword != null'>
+                WHERE name LIKE CONCAT('%',#{keyword},'%') OR visit_purpose LIKE CONCAT('%',#{keyword},'%') OR manager LIKE CONCAT('%',#{keyword},'%')
+            </if>
+        </if>
+
+        <if test='keyword != null'>
+            WHERE name LIKE CONCAT('%',#{keyword},'%') OR visit_purpose LIKE CONCAT('%',#{keyword},'%') OR manager LIKE CONCAT('%',#{keyword},'%')
+        </if>
+
+        <choose>
+            <when test='limit != null and offset != null'>
+                LIMIT ${limit} OFFSET ${offset}
+            </when>
+            <otherwise>
+                LIMIT 20 OFFSET 0
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getVisitor" parameterType="int" resultType="VisitorEntity">
+        SELECT * FROM
+        VISITORS
+        WHERE seq = #{targetSeq}
+    </select>
+    
+    <select id="getVisitorQuestion" parameterType="int" resultType="QuestionnairesEntity">
+        SELECT * FROM QUESTIONNAIRES
+        WHERE seq IN
+        (
+            SELECT questionnaire_seq FROM
+            VISITOR_QUESTIONNAIRES
+            WHERE visitor_seq =
+                (SELECT seq FROM VISITORS WHERE seq = #{targetSeq})
+        );
+
+    </select>
+
+</mapper>

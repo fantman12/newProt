@@ -24,12 +24,4 @@ public class QuestionnairesEntity {
     private String updatedAt;
     private int isDeleted;
 
-//    public void setCreatedAt(Date createdAt) {
-//        this.createdAt = dateFormat.format(createdAt);
-//    }
-//
-//    public void setUpdatedAt(Date updatedAt) {
-//        this.updatedAt = dateFormat.format(updatedAt);
-//    }
-
 }

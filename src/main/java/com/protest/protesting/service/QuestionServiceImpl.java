@@ -1,12 +1,12 @@
 package com.protest.protesting.service;
 
 import com.protest.protesting.entity.QuestionEntity;
+import com.protest.protesting.entity.QuestionPassEntity;
 import com.protest.protesting.entity.QuestionnairesEntity;
 import com.protest.protesting.mapper.QuestionnairesMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -54,6 +54,17 @@ public class QuestionServiceImpl implements QuestionService {
             return e.getStackTrace();
         }
         return true;
+    }
+
+
+    @Override
+    public List<QuestionnairesEntity> getQuestionVisible() {
+        return questionnairesMapper.questionVisible();
+    }
+
+    @Override
+    public List<QuestionPassEntity> questionPassInfo(String startDate, String endDate, String searchType, String limit, String offset) {
+        return questionnairesMapper.questionPassInfo(startDate, endDate,searchType, limit, offset);
     }
 
 }

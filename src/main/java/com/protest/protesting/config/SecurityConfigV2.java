@@ -21,7 +21,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfigV2 extends WebSecurityConfigurerAdapter {
 

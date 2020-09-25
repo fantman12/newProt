@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.protest.protesting.mapper.VisitorQuestionnairesMapper">
+
+    <insert id="insertVisitQuestion" parameterType="VisitorQuestionnairesEntity">
+        INSERT INTO
+        VISITOR_QUESTIONNAIRES
+        (`visitor_seq`, `questionnaire_seq`, `is_agree`)
+        VALUES
+        (#{visitorSeq}, #{questionnaireSeq}, #{isAgree})
+    </insert>
+
+    <select id="getQuestionnaires" resultType="QuestionnairesEntity">
+        SELECT * FROM
+        QUESTIONNAIRES
+        WHERE is_visibled = 1
+    </select>
+</mapper>

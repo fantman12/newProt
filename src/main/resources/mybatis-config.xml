@@ -3,10 +3,17 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
+    <settings>
+        <setting name="jdbcTypeForNull" value="NULL" />
+    </settings>
     <typeAliases>
         <typeAlias alias="AccountEntity" type="com.protest.protesting.entity.AccountEntity"/>
         <typeAlias alias="QuestionEntity" type="com.protest.protesting.entity.QuestionEntity"/>
         <typeAlias alias="QuestionnairesEntity" type="com.protest.protesting.entity.QuestionnairesEntity"/>
         <typeAlias alias="User" type="com.protest.protesting.entity.User"/>
+        <typeAlias alias="VisitorEntity" type="com.protest.protesting.entity.VisitorEntity"/>
+        <typeAlias alias="VisitorQuestionnairesEntity" type="com.protest.protesting.entity.VisitorQuestionnairesEntity"/>
+        <typeAlias alias="VisitorListEntity" type="com.protest.protesting.entity.VisitorListEntity"/>
+        <typeAlias alias="QuestionPassEntity" type="com.protest.protesting.entity.QuestionPassEntity"/>
     </typeAliases>
 </configuration>

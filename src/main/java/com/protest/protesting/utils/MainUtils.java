@@ -6,6 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 @Component
 public class MainUtils {
@@ -31,5 +34,32 @@ public class MainUtils {
                 result,
                 this.getReqURI()
         );
+    }
+
+    public String getymdDateFormat(String pYear, String pMonth, String pDate, int dateOption) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Integer.parseInt(pYear), Integer.parseInt(pMonth), Integer.parseInt(pDate));
+        cal.add(Calendar.DATE, dateOption);
+
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date = cal.get(Calendar.DATE);
+        int hour = cal.get(Calendar.HOUR);
+        int minute = cal.get(Calendar.MINUTE);
+        int second = cal.get(Calendar.SECOND);
+
+        return year+"-"+month+"-"+date+ " " +hour+":"+minute+":"+second;
+    }
+
+    public String SimpleYmdDateFormat(String pYear, String pMonth, String pDate, int dateOption) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Integer.parseInt(pYear), Integer.parseInt(pMonth), Integer.parseInt(pDate));
+        cal.add(Calendar.DATE, dateOption);
+
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date = cal.get(Calendar.DATE);
+
+        return year+"-"+month+"-"+date;
     }
 }

@@ -19,6 +19,38 @@
     </select>
 
 
+    <select id="questionVisible" resultType="QuestionnairesEntity">
+        SELECT * FROM QUESTIONNAIRES
+        WHERE is_deleted = 0
+        AND is_visibled = 1
+    </select>
+
+    <select id="questionPassInfo" parameterType="String" resultType="QuestionPassEntity">
+        SELECT
+        DATE(v.visited_at) AS visited_at,
+        (SELECT COUNT(*) FROM VISITORS
+        WHERE is_passed = 1 AND DATE(visited_at) = DATE(v.visited_at)) AS passCnt,
+        (SELECT COUNT(*) FROM VISITORS
+        WHERE is_passed = 0 AND DATE(visited_at) = DATE(v.visited_at)) AS unPassCnt
+        FROM VISITORS v
+        <if test="startDate != null and endDate != null">
+            <![CDATA[WHERE v.visited_at >= #{startDate} AND v.visited_at <= #{endDate}]]>
+        </if>
+
+        GROUP BY DATE(v.visited_at)
+        ORDER BY v.visited_at DESC
+
+        <choose>
+            <when test='limit != null and offset != null'>
+                LIMIT ${limit} OFFSET ${offset}
+            </when>
+            <otherwise>
+                LIMIT 20 OFFSET 0
+            </otherwise>
+        </choose>
+    </select>
+
+
     <insert id="insertQuestion" parameterType="QuestionEntity">
         INSERT INTO QUESTIONNAIRES (`question`, `sub_question`) VALUES (#{question}, #{subQuestion})
     </insert>
