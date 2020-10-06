@@ -21,7 +21,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfigV2 extends WebSecurityConfigurerAdapter {
 
@@ -29,8 +29,8 @@ public class SecurityConfigV2 extends WebSecurityConfigurerAdapter {
     private String secret;
 
 
-    @Autowired JwtUtils jwtUtils;
-    @Autowired AuthenticationManager authenticationManager;
+//    @Autowired JwtUtils jwtUtils;
+//    @Autowired AuthenticationManager authenticationManager;
 
     @Autowired UserService userService;
 
@@ -49,7 +49,7 @@ public class SecurityConfigV2 extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().permitAll()
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter((AuthenticationManager) authenticationManager, jwtUtils),
+                .addFilterBefore(new JwtAuthenticationFilter(authenticationManagerBean(), jwtUtils()),
                         UsernamePasswordAuthenticationFilter.class);
     }
 

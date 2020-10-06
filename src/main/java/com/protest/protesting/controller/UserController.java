@@ -6,6 +6,7 @@ import com.protest.protesting.entity.AuthenticationToken;
 import com.protest.protesting.entity.User;
 import com.protest.protesting.service.UserService;
 import com.protest.protesting.utils.JwtUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @RestController
+@RequiredArgsConstructor
 public class UserController {
     @Autowired UserService userService;
 
@@ -32,7 +34,10 @@ public class UserController {
     @PostMapping(value = "/login")
     public ResponseEntity<ApiResponseEntity> login(@RequestBody AuthenticationRequest authenticationRequest, HttpServletRequest req) {
         String username = authenticationRequest.getUsername();
-        String password = authenticationRequest.getPassword();
+        String password =  authenticationRequest.getPassword();
+
+        System.out.println(username);
+        System.out.println(password);
 
         // User Scheme setting Required
         UsernamePasswordAuthenticationToken toekn = new UsernamePasswordAuthenticationToken(username, password);
