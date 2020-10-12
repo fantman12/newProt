@@ -38,6 +38,11 @@ public class VisitorController {
         return new ResponseEntity<ApiResponseEntity>(mainUtils.successResponse(""), HttpStatus.OK);
     }
 
+    /**
+     * 문진표 작성 (Page 7)
+     * @param vqe
+     * @return
+     */
     @PostMapping("/addVisitQuestion")
     public ResponseEntity<ApiResponseEntity> addVisitQuestion(@RequestBody ArrayList<VisitorQuestionnairesEntity> vqe) {
         Boolean isResult = null;
@@ -117,6 +122,12 @@ public class VisitorController {
         List<VisitorEntity> list = visitorService.getVisitorList(startDate, endDate, keyword, limit, offset);
 
         List<VisitorEntity> parseList = new ArrayList<>();
+
+        JSONObject json = new JSONObject();
+        json.put("limit", limit);
+        json.put("offset", offset);
+
+
         for (VisitorEntity ve : list) {
             if (isPassed != null && isPassed.equals("1")) {
                 if (ve.getIsPassed() == 1) {
@@ -132,7 +143,8 @@ public class VisitorController {
         }
 
         parseList = list;
-        return new ResponseEntity<ApiResponseEntity>(mainUtils.successResponse(parseList), HttpStatus.OK);
+        json.put("list", parseList);
+        return new ResponseEntity<ApiResponseEntity>(mainUtils.successResponse(json), HttpStatus.OK);
     }
 
 

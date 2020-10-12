@@ -36,6 +36,15 @@ public class MainUtils {
         );
     }
 
+    public ApiResponseEntity badResponse(Object result, String error) {
+        return new ApiResponseEntity(
+                HttpStatus.BAD_REQUEST.value(),
+                error,
+                result,
+                this.getReqURI()
+        );
+    }
+
     public String getymdDateFormat(String pYear, String pMonth, String pDate, int dateOption) {
         Calendar cal = Calendar.getInstance();
         cal.set(Integer.parseInt(pYear), Integer.parseInt(pMonth), Integer.parseInt(pDate));

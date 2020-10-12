@@ -89,7 +89,6 @@ public class PageController {
         String pw = signUpEntity.getPassword();
         String confirmPw = signUpEntity.getConfirmPw();
 
-
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(name)
         || StringUtils.isEmpty(pw) || StringUtils.isEmpty(confirmPw)) {
             ApiResponseEntity resEntity = new ApiResponseEntity(

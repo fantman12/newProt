@@ -13,11 +13,37 @@
 <!--        <id property="isDeleted" column="is_deleted"/>-->
 
     </resultMap>
-    <select id="selectQuestion" resultType="QuestionnairesEntity">
+    <select id="selectQuestion" parameterType="String" resultType="QuestionnairesEntity">
         SELECT * FROM QUESTIONNAIRES
+        WHERE is_deleted = 0
+
+        ORDER BY `ordered_by` ASC
+        <choose>
+            <when test='limit != null and offset != null'>
+                LIMIT ${limit} OFFSET ${offset}
+            </when>
+            <otherwise>
+                LIMIT 20 OFFSET 0
+            </otherwise>
+        </choose>
+
+    </select>
+
+    <select id="questionVisibleCnt" resultType="int">
+        SELECT COUNT(*) as count FROM QUESTIONNAIRES
+        WHERE is_deleted = 0
+        AND is_visibled = 1
+    </select>
+
+    <select id="questionUsingCnt" resultType="int">
+        SELECT COUNT(*) as count FROM QUESTIONNAIRES
         WHERE is_deleted = 0
     </select>
 
+    <select id="questionMaxOrderBy" resultType="int">
+        SELECT max(ordered_by) as ordered FROM QUESTIONNAIRES
+        WHERE is_deleted = 0
+    </select>
 
     <select id="questionVisible" resultType="QuestionnairesEntity">
         SELECT * FROM QUESTIONNAIRES
@@ -51,17 +77,30 @@
     </select>
 
 
-    <insert id="insertQuestion" parameterType="QuestionEntity">
-        INSERT INTO QUESTIONNAIRES (`question`, `sub_question`) VALUES (#{question}, #{subQuestion})
+    <insert id="insertQuestion" parameterType="QuestionEntity" useGeneratedKeys="true" keyProperty="seq">
+        INSERT INTO QUESTIONNAIRES (`question`, `sub_question`, `ordered_by`) VALUES (#{question}, #{subQuestion}, #{orderedBy})
     </insert>
+
+    <select id="getOneQuestion" parameterType="QuestionnairesEntity" resultType="QuestionnairesEntity">
+        SELECT * FROM QUESTIONNAIRES
+        WHERE is_deleted = 0
+        AND seq = #{seq}
+    </select>
     
     <update id="updateQuestion" parameterType="QuestionnairesEntity">
         UPDATE QUESTIONNAIRES
-        SET `question` = #{question},
-        <if test='#{subQuestion} != null' >
-            `sub_question` = #{subQuestion}
+        SET `question` = #{question}
+        <if test='subQuestion != null' >
+            , `sub_question` = #{subQuestion}
+        </if>
+        <if test="isVisibled != null and isVisibled != 0">
+            , `is_visibled` = #{isVisibled}
+        </if>
+        <if test="orderedBy != null and orderedBy != 0">
+            , `ordered_by` = #{orderedBy}
         </if>
         WHERE `seq` = #{seq}
+        AND is_deleted = 0
     </update>
 
     <update id="deleteQuestion" parameterType="QuestionnairesEntity">

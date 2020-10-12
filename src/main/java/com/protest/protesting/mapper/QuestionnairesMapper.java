@@ -9,10 +9,14 @@ import java.util.List;
 
 @Mapper
 public interface QuestionnairesMapper {
-    public List<QuestionnairesEntity> selectQuestion();
+    public List<QuestionnairesEntity> selectQuestion(String limit, String offset);
     public void insertQuestion(QuestionEntity questionEntity);
     public void updateQuestion(QuestionnairesEntity questionnairesEntity);
     public void deleteQuestion(QuestionnairesEntity questionnairesEntity);
     public List<QuestionnairesEntity> questionVisible();
     public List<QuestionPassEntity> questionPassInfo(String startDate, String endDate, String searchType, String limit, String offset);
+    public QuestionnairesEntity getOneQuestion(QuestionnairesEntity questionnairesEntity);
+    public int questionVisibleCnt();
+    public int questionUsingCnt();
+    public int questionMaxOrderBy();
 }

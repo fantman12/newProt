@@ -7,6 +7,8 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 public class QuestionEntity {
+    private int seq;
     private String question;
     private String subQuestion;
+    private int orderedBy;
 }

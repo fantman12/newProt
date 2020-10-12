@@ -27,7 +27,7 @@ public class QuestionController {
     @Autowired MainUtils mainUtils;
 
     /**
-     * 문진표 문항 (Page 15)
+     * 문진표 문항 (Page 15) (문항 노출 On 인것만 조회)
      * @return
      */
     @GetMapping("/questionList")
@@ -77,6 +77,9 @@ public class QuestionController {
                     break;
             }
         }
+
+        System.out.println(startDate);
+        System.out.println(endDate);
 
         List<QuestionPassEntity> list = questionService.questionPassInfo(startDate, endDate, searchType, limit, offset);
 

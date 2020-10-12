@@ -16,4 +16,11 @@
         QUESTIONNAIRES
         WHERE is_visibled = 1
     </select>
+
+    <select id="getTargetQuestionnaires" parameterType="int" resultType="QuestionnairesEntity">
+        SELECT * FROM
+        QUESTIONNAIRES
+        WHERE is_visibled = 1
+        AND seq = #{questionnaireSeq}
+    </select>
 </mapper>

@@ -7,7 +7,7 @@ import com.protest.protesting.entity.QuestionnairesEntity;
 import java.util.List;
 
 public interface QuestionService {
-    public List<QuestionnairesEntity> selectQuestionInfo();
+    public List<QuestionnairesEntity> selectQuestionInfo(String limit, String offset);
     public Object insertQuestionInfo(QuestionEntity questionEntity);
     public Object updateQuestionInfo(QuestionnairesEntity questionnairesEntity);
     public Object deleteQuestionInfo(QuestionnairesEntity questionnairesEntity);

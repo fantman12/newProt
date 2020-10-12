@@ -45,7 +45,7 @@ public class SecurityConfigV2 extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests() // 요청에 대한 사용권한 체크
                 .antMatchers("/user/**").hasAuthority("ROLE_USER")
-                .antMatchers("/manager/**").hasAuthority("ROLE_USER")
+                .antMatchers("/managers/**").hasAuthority("ROLE_USER")
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().permitAll()
                 .and()

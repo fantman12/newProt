@@ -57,14 +57,16 @@
         <if test='startDate != null'>
             <![CDATA[ WHERE visited_at >= #{startDate} AND visited_at <= #{endDate}]]>
             <if test='keyword != null'>
-                WHERE name LIKE CONCAT('%',#{keyword},'%') OR visit_purpose LIKE CONCAT('%',#{keyword},'%') OR manager LIKE CONCAT('%',#{keyword},'%')
+                AND name LIKE CONCAT('%',#{keyword},'%') OR visit_purpose LIKE CONCAT('%',#{keyword},'%') OR manager LIKE CONCAT('%',#{keyword},'%')
             </if>
         </if>
 
-        <if test='keyword != null'>
-            WHERE name LIKE CONCAT('%',#{keyword},'%') OR visit_purpose LIKE CONCAT('%',#{keyword},'%') OR manager LIKE CONCAT('%',#{keyword},'%')
+        <if test='startDate == null'>
+            <if test='keyword != null'>
+                WHERE name LIKE CONCAT('%',#{keyword},'%') OR visit_purpose LIKE CONCAT('%',#{keyword},'%') OR manager LIKE CONCAT('%',#{keyword},'%')
+            </if>
         </if>
-
+        ORDER BY `seq` DESC
         <choose>
             <when test='limit != null and offset != null'>
                 LIMIT ${limit} OFFSET ${offset}
