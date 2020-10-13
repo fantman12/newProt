@@ -113,8 +113,8 @@ public class VisitorController {
             @RequestParam(value = "startDate", required = false) String startDate,
             @RequestParam(value = "endDate", required = false) String endDate,
             @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "limit", required = false) String limit,
-            @RequestParam(value = "offset", required = false) String offset,
+            @RequestParam(value = "limit", required = false, defaultValue = "20") int limit,
+            @RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
             @RequestParam(value = "isPassed", required = false) String isPassed,
             @RequestParam(value = "isUnPassed", required = false) String isUnPassed
             ) {

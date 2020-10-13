@@ -29,8 +29,8 @@ public class ManagerController {
      */
     @GetMapping(value = "/questionRegistration")
     public ResponseEntity<ApiResponseEntity> questionManageSelect(
-            @RequestParam(value = "limit", required = false) String limit,
-            @RequestParam(value = "offset", required = false) String offset) {
+            @RequestParam(value = "limit", required = false, defaultValue = "20") int limit,
+            @RequestParam(value = "offset", required = false, defaultValue = "0") int offset) {
         List<QuestionnairesEntity> result = questionService.selectQuestionInfo(limit , offset);
 
         JSONObject json = new JSONObject();

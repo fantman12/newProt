@@ -11,7 +11,7 @@ public interface VisitorService {
     public Object insertVisitorInfo(VisitorEntity ve);
     public int getVisitorCurrentInfo(String startDate, String endDate);
     public Map<String, Integer> getVisitorPassInfo(String startDate, String endDate);
-    public List<VisitorEntity> getVisitorList(String startDate, String endDate, String keyword, String limit, String offset);
+    public List<VisitorEntity> getVisitorList(String startDate, String endDate, String keyword, int limit, int offset);
     public VisitorEntity getVisitor(int targetSeq);
     public List<QuestionnairesEntity> getVisitorQuestion(int targetSeq);
 }

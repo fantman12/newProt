@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface QuestionnairesMapper {
-    public List<QuestionnairesEntity> selectQuestion(String limit, String offset);
+    public List<QuestionnairesEntity> selectQuestion(int limit, int offset);
     public void insertQuestion(QuestionEntity questionEntity);
     public void updateQuestion(QuestionnairesEntity questionnairesEntity);
     public void deleteQuestion(QuestionnairesEntity questionnairesEntity);

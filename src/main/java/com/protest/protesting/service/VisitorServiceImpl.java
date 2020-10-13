@@ -50,7 +50,7 @@ public class VisitorServiceImpl implements VisitorService {
     }
 
     @Override
-    public List<VisitorEntity> getVisitorList(String startDate, String endDate, String keyword, String limit, String offset) {
+    public List<VisitorEntity> getVisitorList(String startDate, String endDate, String keyword, int limit, int offset) {
         return visitorMapper.getVisitorList(startDate, endDate, keyword, limit, offset);
     }
 

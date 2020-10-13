@@ -3,6 +3,9 @@ package com.protest.protesting.service;
 import com.protest.protesting.entity.QuestionEntity;
 import com.protest.protesting.entity.QuestionPassEntity;
 import com.protest.protesting.entity.QuestionnairesEntity;
+import com.protest.protesting.exception.BusinessException;
+import com.protest.protesting.exception.CustomException;
+import com.protest.protesting.exception.ErrorCode;
 import com.protest.protesting.mapper.QuestionnairesMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
@@ -16,35 +19,29 @@ import java.util.List;
 public class QuestionServiceImpl implements QuestionService {
     @Autowired QuestionnairesMapper questionnairesMapper;
 
-    public List<QuestionnairesEntity> selectQuestionInfo(String limit, String offset) {
-        return questionnairesMapper.selectQuestion(limit ,offset);
+    public List<QuestionnairesEntity> selectQuestionInfo(int limit, int offset) {
+        return questionnairesMapper.selectQuestion(limit, offset);
     }
 
 
     public Object insertQuestionInfo(QuestionEntity questionEntity) {
         JSONObject json = new JSONObject();
-        try {
-            int cnt = questionnairesMapper.questionUsingCnt();
-            if (cnt >= 5) {
-                return false;
-            }
-
-            int maxOrderedBy = 0;
-            if (cnt > 0) {
-                maxOrderedBy = questionnairesMapper.questionMaxOrderBy();
-            }
-            System.out.println(maxOrderedBy);
-            questionEntity.setOrderedBy(maxOrderedBy + 1);
-
-            questionnairesMapper.insertQuestion(questionEntity);
-
-            json.put("seq", questionEntity.getSeq());
-            json.put("question", questionEntity.getQuestion());
-            json.put("subQuestion", questionEntity.getSubQuestion());
-
-        } catch (Exception e) {
-            return false;
+        int cnt = questionnairesMapper.questionUsingCnt();
+        if (cnt >= 5) {
+            throw new BusinessException(ErrorCode.QUESTION_OVER_COUNT);
         }
+
+        int maxOrderedBy = 0;
+        if (cnt > 0) {
+            maxOrderedBy = questionnairesMapper.questionMaxOrderBy();
+        }
+        questionEntity.setOrderedBy(maxOrderedBy + 1);
+        questionnairesMapper.insertQuestion(questionEntity);
+
+        json.put("seq", questionEntity.getSeq());
+        json.put("question", questionEntity.getQuestion());
+        json.put("subQuestion", questionEntity.getSubQuestion());
+
         return json;
     }
 
@@ -61,16 +58,7 @@ public class QuestionServiceImpl implements QuestionService {
             return e.getStackTrace();
         }
         return true;
-        //        JSONObject json = new JSONObject();
-//        json.put("question", question.getQuestion());
-//        json.put("subQuestion", question.getSubQuestion());
 
-//        ApiResponseEntity apiResponseEntity = new ApiResponseEntity(
-//                HttpStatus.OK.value(),
-//                "",
-//                json,
-//                request.getRequestURI()
-//        );
     }
 
     public Object deleteQuestionInfo(QuestionnairesEntity questionnairesEntity) {

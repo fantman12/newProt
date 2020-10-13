@@ -13,7 +13,7 @@
 <!--        <id property="isDeleted" column="is_deleted"/>-->
 
     </resultMap>
-    <select id="selectQuestion" parameterType="String" resultType="QuestionnairesEntity">
+    <select id="selectQuestion" parameterType="int" resultType="QuestionnairesEntity">
         SELECT * FROM QUESTIONNAIRES
         WHERE is_deleted = 0
 

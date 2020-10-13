@@ -12,6 +12,6 @@ public class VisitorListEntity {
     private String startDate;
     private String endDate;
     private String keyword;
-    private String limit;
-    private String offset;
+    private int limit;
+    private int offset;
 }
