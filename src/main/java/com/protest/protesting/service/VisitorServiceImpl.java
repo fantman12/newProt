@@ -3,6 +3,8 @@ package com.protest.protesting.service;
 import com.protest.protesting.entity.QuestionnairesEntity;
 import com.protest.protesting.entity.VisitorEntity;
 import com.protest.protesting.entity.VisitorListEntity;
+import com.protest.protesting.exception.BusinessException;
+import com.protest.protesting.exception.ErrorCode;
 import com.protest.protesting.mapper.VisitorMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +28,10 @@ public class VisitorServiceImpl implements VisitorService {
         try {
             visitorMapper.addVisitorInfo(ve);
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()));
-            return false;
-        }
+            e.getStackTrace();
 
+            throw new BusinessException(ErrorCode.VISITOR_INFO_INSERT_ERR);
+        }
         return true;
     }
 
@@ -37,6 +39,7 @@ public class VisitorServiceImpl implements VisitorService {
     public int getVisitorCurrentInfo(String startDate, String endDate) {
         return visitorMapper.getVisitorCurrentInfo(startDate, endDate);
     }
+
     @Override
     public Map<String, Integer> getVisitorPassInfo(String startDate, String endDate) {
          int pass = visitorMapper.getVisitorPassInfo(startDate, endDate);

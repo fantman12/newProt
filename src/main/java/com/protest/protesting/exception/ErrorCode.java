@@ -23,7 +23,11 @@ public enum ErrorCode {
 
     // Question
     QUESTION_OVER_COUNT(400, "Q001", "문진표 사용중인 개수가 5개를 넘을수없습니다."),
-    QUESTION_ORDER_COUNT(400, "Q002", "문진표 순서는 5개를 넘을수없습니다.")
+    QUESTION_ORDER_COUNT(400, "Q002", "문진표 순서는 5개를 넘을수없습니다."),
+    QUESTION_NOT_FOUND(400, "Q003", "삭제할 문진표 정보가 존재하지 않습니다."),
+
+    // Visitor
+    VISITOR_INFO_INSERT_ERR(400, "V001", "방문자 정보 저장에 실패하였습니다")
 
 
     ;

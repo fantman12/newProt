@@ -47,32 +47,24 @@ public class QuestionServiceImpl implements QuestionService {
 
 
     public Object updateQuestionInfo(QuestionnairesEntity questionnairesEntity) {
-        try {
-            int visibleCnt = questionnairesMapper.questionVisibleCnt();
-            if (visibleCnt >= 5) {
-                return false;
-            }
-
-            questionnairesMapper.updateQuestion(questionnairesEntity);
-        } catch (Exception e) {
-            return e.getStackTrace();
+        int visibleCnt = questionnairesMapper.questionVisibleCnt();
+        if (visibleCnt >= 5) {
+            throw new BusinessException(ErrorCode.QUESTION_OVER_COUNT);
         }
+
+        questionnairesMapper.updateQuestion(questionnairesEntity);
+
         return true;
 
     }
 
     public Object deleteQuestionInfo(QuestionnairesEntity questionnairesEntity) {
-        try {
-            QuestionnairesEntity qe = questionnairesMapper.getOneQuestion(questionnairesEntity);
-            System.out.println(qe);
-            if (qe == null) {
-                return false;
-            }
-            questionnairesMapper.deleteQuestion(questionnairesEntity);
-
-        } catch (Exception e) {
-            return e.getStackTrace();
+        QuestionnairesEntity qe = questionnairesMapper.getOneQuestion(questionnairesEntity);
+        if (qe == null) {
+            throw new BusinessException(ErrorCode.QUESTION_NOT_FOUND);
         }
+        questionnairesMapper.deleteQuestion(questionnairesEntity);
+
         return true;
     }
 
