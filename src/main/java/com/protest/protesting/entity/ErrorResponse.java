@@ -1,9 +1,12 @@
 package com.protest.protesting.entity;
 
 import com.protest.protesting.exception.ErrorCode;
+import com.protest.protesting.utils.MainUtils;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -18,10 +21,10 @@ public class ErrorResponse {
 
     private Date timestamp;
     private String message;
+    private JSONObject data;
     private int status;
     private List<FieldError> error;
     private String code;
-
 
     private ErrorResponse(final ErrorCode code, final List<FieldError> errors) {
         this.timestamp = new Date();
@@ -29,6 +32,7 @@ public class ErrorResponse {
         this.status = code.getStatus();
         this.error = errors;
         this.code = code.getCode();
+        this.data = new JSONObject();
     }
 
     private ErrorResponse(final ErrorCode code) {
@@ -37,8 +41,8 @@ public class ErrorResponse {
         this.status = code.getStatus();
         this.code = code.getCode();
         this.error = new ArrayList<>();
+        this.data = new JSONObject();
     }
-
 
     public static ErrorResponse of(final ErrorCode code, final BindingResult bindingResult) {
         return new ErrorResponse(code, FieldError.of(bindingResult));

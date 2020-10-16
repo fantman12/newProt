@@ -1,6 +1,9 @@
 package com.protest.protesting.exception;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.protest.protesting.utils.MainUtils;
+
+import javax.servlet.http.HttpServletRequest;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ErrorCode {
@@ -27,7 +30,12 @@ public enum ErrorCode {
     QUESTION_NOT_FOUND(400, "Q003", "삭제할 문진표 정보가 존재하지 않습니다."),
 
     // Visitor
-    VISITOR_INFO_INSERT_ERR(400, "V001", "방문자 정보 저장에 실패하였습니다")
+    VISITOR_INFO_INSERT_ERR(400, "V001", "방문자 정보 저장에 실패하였습니다."),
+
+    // User Login / SignUp
+    USER_SIGN_UP_REQUIRED(400, "S001", "필수값을 확인해주세요."),
+    USER_SIGN_UP_NOT_MATCH_PW(400, "S002", "입력하신 비밀번호가 일치하지 않습니다."),
+
 
 
     ;
@@ -52,6 +60,5 @@ public enum ErrorCode {
     public int getStatus() {
         return status;
     }
-
 
 }

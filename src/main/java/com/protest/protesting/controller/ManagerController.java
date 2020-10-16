@@ -66,7 +66,8 @@ public class ManagerController {
 
         Object result = questionService.insertQuestionInfo(questionEntity);
         if (result.equals(false)) {
-            return new ResponseEntity<ApiResponseEntity>(mainUtils.badResponse("", "문진표 등록에 실패하였습니다."), HttpStatus.OK);
+            JSONObject jsonObject = new JSONObject();
+            return new ResponseEntity<ApiResponseEntity>(mainUtils.badResponse(jsonObject, "문진표 등록에 실패하였습니다."), HttpStatus.OK);
         }
         return new ResponseEntity<ApiResponseEntity>(mainUtils.successResponse(result), HttpStatus.OK);
     }

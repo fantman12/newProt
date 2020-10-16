@@ -5,7 +5,10 @@ import com.protest.protesting.entity.ApiResponseEntity;
 import com.protest.protesting.entity.LoginEntity;
 import com.protest.protesting.entity.SignUpEntity;
 import com.protest.protesting.entity.User;
+import com.protest.protesting.exception.BusinessException;
+import com.protest.protesting.exception.ErrorCode;
 import com.protest.protesting.service.UserService;
+import com.protest.protesting.utils.MainUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +29,8 @@ import java.util.Iterator;
 @RestController
 public class PageController {
     @Autowired UserService userService;
+
+    @Autowired MainUtils mainUtils;
 
 
     private User user1;
@@ -91,24 +96,11 @@ public class PageController {
 
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(name)
         || StringUtils.isEmpty(pw) || StringUtils.isEmpty(confirmPw)) {
-            ApiResponseEntity resEntity = new ApiResponseEntity(
-                    HttpStatus.BAD_REQUEST.value(),
-                    "",
-                    "필수값을 확인해주세요.",
-                    request.getRequestURI()
-            );
-
-            return new ResponseEntity<ApiResponseEntity>(resEntity, HttpStatus.OK);
+            throw new BusinessException(ErrorCode.USER_SIGN_UP_REQUIRED);
         }
 
         if (!pw.equals(confirmPw)) {
-            ApiResponseEntity resEntity = new ApiResponseEntity(
-                    HttpStatus.BAD_REQUEST.value(),
-                    "",
-                    "Not Match Password",
-                    request.getRequestURI()
-            );
-            return new ResponseEntity<ApiResponseEntity>(resEntity, HttpStatus.OK);
+            throw new BusinessException(ErrorCode.USER_SIGN_UP_NOT_MATCH_PW);
         }
 
 
@@ -116,12 +108,14 @@ public class PageController {
         user1.setUsername(username);
         user1.setPassword(pw);
         user1.setRoles("ROLE_USER"); // const static
+//        user1.setRoles("ROLE_ADMIN"); // const static
         user1.setAccountNonExpired(true);
         user1.setAccountNonLocked(true);
         user1.setName(name);
         user1.setCredentialsNonExpired(true);
         user1.setEnabled(true);
         user1.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER"));
+//        user1.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_ADMIN"));
 
         // 생성전 검증 필요
         userService.createUser(user1);
@@ -136,12 +130,7 @@ public class PageController {
         obj.put("name", user1.getName());
         obj.put("roles", user1.getRoles());
 
-        ApiResponseEntity resEntity = new ApiResponseEntity(
-                HttpStatus.OK.value(),
-                "",
-                obj,
-                request.getRequestURI());
-        return new ResponseEntity<ApiResponseEntity>(resEntity, HttpStatus.OK);
+        return new ResponseEntity<ApiResponseEntity>(mainUtils.successResponse(""), HttpStatus.OK);
     }
 
 
