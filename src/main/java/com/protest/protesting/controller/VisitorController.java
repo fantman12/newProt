@@ -1,23 +1,34 @@
 package com.protest.protesting.controller;
 
+import com.google.common.util.concurrent.ListenableFuture;
 import com.protest.protesting.entity.*;
+import com.protest.protesting.exception.BusinessException;
+import com.protest.protesting.exception.ErrorCode;
 import com.protest.protesting.service.VisitorQuestionnairesService;
 import com.protest.protesting.service.VisitorService;
 import com.protest.protesting.utils.MainUtils;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import io.github.bucket4j.Bandwidth;
+import io.github.bucket4j.Bucket;
+import io.github.bucket4j.Bucket4j;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.apache.ibatis.annotations.Param;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.AsyncRestTemplate;
+import org.springframework.web.context.request.async.DeferredResult;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.time.Duration;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 @Slf4j
 @RestController
@@ -119,8 +130,14 @@ public class VisitorController {
             @RequestParam(value = "isUnPassed", required = false) String isUnPassed
             ) {
 
-        List<VisitorEntity> list = visitorService.getVisitorList(startDate, endDate, keyword, limit, offset);
+        Bandwidth rateLimit = Bandwidth.simple(5, Duration.ofSeconds(1));
+        Bucket bucket = Bucket4j.builder().addLimit(rateLimit).build();
+        // index 1 페어일떄 Blcok
+        if (bucket.tryConsume(1)) {
+            throw new BusinessException(ErrorCode.TRY_API_CALL_MAX);
+        }
 
+        List<VisitorEntity> list = visitorService.getVisitorList(startDate, endDate, keyword, limit, offset);
         List<VisitorEntity> parseList = new ArrayList<>();
 
         JSONObject json = new JSONObject();
@@ -165,5 +182,29 @@ public class VisitorController {
         return new ResponseEntity<ApiResponseEntity>(mainUtils.successResponse(json), HttpStatus.OK);
     }
 
-
+//    비동기 Testing
+//    @GetMapping("/mTest")
+//    public void mTest() {
+//        String requestURL = "http://localhost:8080/visitorList";
+//        try {
+//            OkHttpClient client = new OkHttpClient();
+//            Request request = new Request.Builder().url(requestURL).build();
+//
+//            for (int i = 0; i <= 5; i++) {
+//                client.newCall(request).enqueue(new Callback() {
+//                    @Override
+//                    public void onFailure(Request request, IOException e) {
+//                        System.out.println(e.toString());
+//                    }
+//
+//                    @Override
+//                    public void onResponse(Response response) throws IOException {
+//                        System.out.println(response.body().string());
+//                    }
+//                });
+//            }
+//        } catch (Exception e) {
+//            System.out.println(e.toString());
+//        }
+//    }
 }

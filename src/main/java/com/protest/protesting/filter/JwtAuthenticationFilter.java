@@ -44,7 +44,6 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         chain.doFilter(request, response);
     }
 
-
     /**
      * 헤더의 Authorization로부터 토큰을 가져와 사용자의 정보를 담을 Authentication 객체로 변환
      * */

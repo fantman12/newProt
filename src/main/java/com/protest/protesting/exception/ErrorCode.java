@@ -36,7 +36,8 @@ public enum ErrorCode {
     USER_SIGN_UP_REQUIRED(400, "S001", "필수값을 확인해주세요."),
     USER_SIGN_UP_NOT_MATCH_PW(400, "S002", "입력하신 비밀번호가 일치하지 않습니다."),
 
-
+    // Api LateLimit
+    TRY_API_CALL_MAX(400, "T001", "API 요청이 너무 많습니다."),
 
     ;
     private final String code;
