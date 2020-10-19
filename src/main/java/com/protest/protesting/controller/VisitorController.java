@@ -22,7 +22,10 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.AsyncRestTemplate;
 import org.springframework.web.context.request.async.DeferredResult;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -130,12 +133,12 @@ public class VisitorController {
             @RequestParam(value = "isUnPassed", required = false) String isUnPassed
             ) {
 
-        Bandwidth rateLimit = Bandwidth.simple(5, Duration.ofSeconds(1));
-        Bucket bucket = Bucket4j.builder().addLimit(rateLimit).build();
+//        Bandwidth rateLimit = Bandwidth.simple(5, Duration.ofSeconds(1));
+//        Bucket bucket = Bucket4j.builder().addLimit(rateLimit).build();
         // index 1 페어일떄 Blcok
-        if (bucket.tryConsume(1)) {
-            throw new BusinessException(ErrorCode.TRY_API_CALL_MAX);
-        }
+//        if (bucket.tryConsume(1)) {
+//            throw new BusinessException(ErrorCode.TRY_API_CALL_MAX);
+//        }
 
         List<VisitorEntity> list = visitorService.getVisitorList(startDate, endDate, keyword, limit, offset);
         List<VisitorEntity> parseList = new ArrayList<>();
@@ -207,4 +210,74 @@ public class VisitorController {
 //            System.out.println(e.toString());
 //        }
 //    }
+
+    @GetMapping("vTest")
+    public void vTest() {
+        this.get("https://10.10.40.210/api/v1/group?app_key=edb65b00ec81dee6&sign=ff951fdaa6d3831251aad221b01b5369&timestamp=1603093240247");
+//        this.get("http://localhost:8080/visitorList");
+    }
+
+    public void get(String requestURL) {
+        try {
+            OkHttpClient client = new OkHttpClient();
+            client.setHostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            });
+
+            Request request = new Request.Builder()
+//                    .addHeader("x-api-key", RestTestCommon.API_KEY)
+                    .url(requestURL)
+                    .build(); //GET Request
+
+            //동기 처리시 execute함수 사용
+            Response response = client.newCall(request).execute();
+
+            //출력
+            String message = response.body().string();
+            System.out.println(message);
+        } catch (Exception e){
+            System.err.println(e.toString());
+        }
+    }
+
+
+    public void post(String requestURL, String jsonMessage) {
+        try{
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+//                    .addHeader("x-api-key", RestTestCommon.API_KEY)
+                    .url(requestURL)
+                    .post(com.squareup.okhttp.RequestBody.create(com.squareup.okhttp.MediaType.parse("application/json"), jsonMessage)) //POST로 전달할 내용 설정
+                    .build();
+
+            //동기 처리시 execute함수 사용
+            Response response = client.newCall(request).execute();
+
+            //출력
+            String message = response.body().string();
+            System.out.println(message);
+
+        } catch (Exception e) {
+            System.err.println(e.toString());
+        }
+    }
+
+
+    /**
+     * faceone Agent에서 QR 코드 set
+     */
+    @PutMapping("/faceone/qrCode")
+    public ResponseEntity<ApiResponseEntity> getVisitorInfo(
+            @RequestParam("qrCode") String qrCode,
+            @RequestParam("name") String name
+    ) {
+
+        System.out.println(qrCode);
+        return new ResponseEntity<ApiResponseEntity>(mainUtils.successResponse(""), HttpStatus.OK);
+    }
+
+
 }
