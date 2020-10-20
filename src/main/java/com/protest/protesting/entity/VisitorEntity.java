@@ -1,16 +1,18 @@
 package com.protest.protesting.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.Date;
 
 @Getter @Setter
 @AllArgsConstructor
 public class VisitorEntity {
 
     private int seq;
+    private Integer companySeq;
     private String birthday;
     private String name;
+    private String qrCode;
     private String visitedAt;
     private String phoneNumber;
     private String affiliation;

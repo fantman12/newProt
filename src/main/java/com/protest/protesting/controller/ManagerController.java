@@ -1,11 +1,14 @@
 package com.protest.protesting.controller;
 
-import com.protest.protesting.entity.ApiResponseEntity;
-import com.protest.protesting.entity.AuthenticationToken;
-import com.protest.protesting.entity.QuestionEntity;
-import com.protest.protesting.entity.QuestionnairesEntity;
+import com.protest.protesting.entity.*;
+import com.protest.protesting.mapper.CompaniesMapper;
+import com.protest.protesting.service.CompaniesService;
 import com.protest.protesting.service.QuestionService;
 import com.protest.protesting.utils.MainUtils;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +23,6 @@ import java.util.List;
 @RequestMapping("/manager")
 public class ManagerController {
     @Autowired QuestionService questionService;
-
     @Autowired MainUtils mainUtils;
 
     /**
@@ -47,6 +49,7 @@ public class ManagerController {
      * @param qne
      * @return
      */
+    @ApiOperation(value = "문진표 단일 삭제 (Page 16) (소프트 Delete)")
     @DeleteMapping(value = "/questionRegistration")
     public ResponseEntity<ApiResponseEntity> questionManageDelete(@RequestBody QuestionnairesEntity qne) {
         Object result = questionService.deleteQuestionInfo(qne);
@@ -87,4 +90,13 @@ public class ManagerController {
         }
         return new ResponseEntity<ApiResponseEntity>(mainUtils.successResponse(""), HttpStatus.OK);
     }
+
+    /**
+     * 담당자 리스트 조회
+     */
+//    @GetMapping(value = "/infoList")
+//    public ResponseEntity<ApiResponseEntity> managerInfoList() {
+//
+//    }
+
 }

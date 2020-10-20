@@ -3,9 +3,10 @@
 
 <mapper namespace="com.protest.protesting.mapper.VisitorMapper">
 
-    <insert id="addVisitorInfo" parameterType="VisitorEntity">
+    <insert id="addVisitorInfo" parameterType="VisitorEntity" useGeneratedKeys="true" keyProperty="seq">
         INSERT INTO VISITORS (
         `birthday`,
+        `company_seq`,
         `name`,
         `visited_at`,
         `phone_number`,
@@ -16,6 +17,7 @@
         )
         VALUES
         (#{birthday},
+        #{companySeq},
         #{name},
         #{visitedAt},
         #{phoneNumber},
@@ -24,7 +26,16 @@
         #{manager},
         #{isPassed}
         );
+<!--        <selectKey keyProperty="seq" resultType="int" order="AFTER">-->
+<!--            SELECT seq-->
+<!--            FROM VISITORS-->
+<!--            AND company_seq = #{companySeq}-->
+<!--            AND phone_number = #{phoneNumber}-->
+<!--            AND name = #{name}-->
+<!--            AND is_deleted = 0-->
+<!--        </selectKey>-->
     </insert>
+
     <select id="getVisitorCurrentInfo" parameterType="String" resultType="int">
         <![CDATA[
             SELECT COUNT(*) AS nowVisitor FROM VISITORS
@@ -59,13 +70,22 @@
             <if test='keyword != null'>
                 AND name LIKE CONCAT('%',#{keyword},'%') OR visit_purpose LIKE CONCAT('%',#{keyword},'%') OR manager LIKE CONCAT('%',#{keyword},'%')
             </if>
+
+            <if test="companySeq != null">
+                AND company_seq = #{companySeq}
+            </if>
         </if>
 
         <if test='startDate == null'>
             <if test='keyword != null'>
                 WHERE name LIKE CONCAT('%',#{keyword},'%') OR visit_purpose LIKE CONCAT('%',#{keyword},'%') OR manager LIKE CONCAT('%',#{keyword},'%')
             </if>
+
+            <if test="companySeq != null">
+                AND company_seq = #{companySeq}
+            </if>
         </if>
+
         ORDER BY `seq` DESC
         <choose>
             <when test='limit != null and offset != null'>
@@ -93,6 +113,43 @@
                 (SELECT seq FROM VISITORS WHERE seq = #{targetSeq})
         );
 
+    </select>
+
+    <update id="updateVisitorQr" parameterType="VisitorQrEntity">
+
+        UPDATE VISITORS
+        SET qr_code = #{qrCode}
+        WHERE name = #{name}
+        AND company_seq = #{companySeq}
+        AND phone_number = #{phoneNumber}
+        AND is_deleted = 0
+        <selectKey keyProperty="seq" resultType="int" order="AFTER">
+            SELECT seq
+            FROM VISITORS
+            WHERE qr_code = #{qrCode}
+            AND company_seq = #{companySeq}
+            AND phone_number = #{phoneNumber}
+            AND name = #{name}
+            AND is_deleted = 0
+        </selectKey>
+
+    </update>
+
+    <update id="updateVisitorAt" parameterType="VisitorEntity">
+        UPDATE VISITORS
+        SET `visited_at` = NOW(), `updated_at` = NOW()
+        WHERE seq = #{seq}
+        AND is_deleted = 0
+    </update>
+
+    <select id="alreadyVisitorInfo" parameterType="VisitorEntity" resultType="VisitorEntity">
+        SELECT * FROM VISITORS
+        WHERE `company_seq` = #{companySeq}
+        AND `name` = #{name}
+        AND `phone_number` = #{phoneNumber}
+        AND `is_deleted` = 0
+        ORDER BY `seq` DESC
+        LIMIT 1
     </select>
 
 </mapper>

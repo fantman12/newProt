@@ -5,6 +5,7 @@
 <configuration>
     <settings>
         <setting name="jdbcTypeForNull" value="NULL" />
+        <setting name="returnInstanceForEmptyRow" value="true"/>
     </settings>
     <typeAliases>
         <typeAlias alias="AccountEntity" type="com.protest.protesting.entity.AccountEntity"/>
@@ -15,5 +16,7 @@
         <typeAlias alias="VisitorQuestionnairesEntity" type="com.protest.protesting.entity.VisitorQuestionnairesEntity"/>
         <typeAlias alias="VisitorListEntity" type="com.protest.protesting.entity.VisitorListEntity"/>
         <typeAlias alias="QuestionPassEntity" type="com.protest.protesting.entity.QuestionPassEntity"/>
+        <typeAlias alias="VisitorQrEntity" type="com.protest.protesting.entity.VisitorQrEntity"/>
+        <typeAlias alias="CompaniesEntity" type="com.protest.protesting.entity.CompaniesEntity"/>
     </typeAliases>
 </configuration>

@@ -39,6 +39,12 @@ public enum ErrorCode {
     // Api LateLimit
     TRY_API_CALL_MAX(400, "T001", "API 요청이 너무 많습니다."),
 
+    // QR Update Error
+    AGENT_QR_UPDATE_FAIL(400, "QR001", "QR 코드 정보 업데이트에 실패하였습니다."),
+
+    // Company
+    ERR_NOT_FOUND_COMPANY(400, "CO001", "기관 정보가 존재하지 않습니다."),
+
     ;
     private final String code;
     private final String message;

@@ -16,6 +16,7 @@ import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Bucket4j;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
+import org.bouncycastle.math.ec.ScaleYPointMap;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -46,10 +47,7 @@ public class VisitorController {
     @PostMapping("/addVisitor")
     public ResponseEntity<ApiResponseEntity> addVisitor(@RequestBody VisitorEntity ve) {
         Object result = visitorService.insertVisitorInfo(ve);
-        if (!result.equals(true)) {
-            return new ResponseEntity<ApiResponseEntity>(mainUtils.badResponse(""), HttpStatus.OK);
-        }
-        return new ResponseEntity<ApiResponseEntity>(mainUtils.successResponse(""), HttpStatus.OK);
+        return new ResponseEntity<ApiResponseEntity>(mainUtils.successResponse(result), HttpStatus.OK);
     }
 
     /**
@@ -125,13 +123,17 @@ public class VisitorController {
     @GetMapping("/visitorList")
     public ResponseEntity<ApiResponseEntity> getVisitorList(
             @RequestParam(value = "startDate", required = false) String startDate,
+            @RequestParam(value = "companySeq", required = false) Integer companySeq,
             @RequestParam(value = "endDate", required = false) String endDate,
             @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "limit", required = false, defaultValue = "20") int limit,
             @RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
             @RequestParam(value = "isPassed", required = false) String isPassed,
             @RequestParam(value = "isUnPassed", required = false) String isUnPassed
+
             ) {
+
+//        RateLimit
 
 //        Bandwidth rateLimit = Bandwidth.simple(5, Duration.ofSeconds(1));
 //        Bucket bucket = Bucket4j.builder().addLimit(rateLimit).build();
@@ -140,7 +142,7 @@ public class VisitorController {
 //            throw new BusinessException(ErrorCode.TRY_API_CALL_MAX);
 //        }
 
-        List<VisitorEntity> list = visitorService.getVisitorList(startDate, endDate, keyword, limit, offset);
+        List<VisitorEntity> list = visitorService.getVisitorList(startDate, endDate, keyword, limit, offset, companySeq);
         List<VisitorEntity> parseList = new ArrayList<>();
 
         JSONObject json = new JSONObject();
@@ -270,13 +272,9 @@ public class VisitorController {
      * faceone Agent에서 QR 코드 set
      */
     @PutMapping("/faceone/qrCode")
-    public ResponseEntity<ApiResponseEntity> getVisitorInfo(
-            @RequestParam("qrCode") String qrCode,
-            @RequestParam("name") String name
-    ) {
-
-        System.out.println(qrCode);
-        return new ResponseEntity<ApiResponseEntity>(mainUtils.successResponse(""), HttpStatus.OK);
+    public ResponseEntity<ApiResponseEntity> updateByQr(@RequestBody VisitorQrEntity visitorQrEntity) {
+        VisitorEntity visitorEntity = visitorService.updateVisitorQr(visitorQrEntity);
+        return new ResponseEntity<ApiResponseEntity>(mainUtils.successResponse(visitorEntity), HttpStatus.OK);
     }
 
 

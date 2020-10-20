@@ -1,19 +1,25 @@
 package com.protest.protesting;
 
 import com.protest.protesting.mapper.AccountMapper;
+import com.protest.protesting.property.FileUploadProperties;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import com.protest.protesting.utils.RedisUtil;
 import redis.clients.jedis.JedisPubSub;
 
-@SpringBootApplication
+
 //@MapperScan("com.protest.protesting.mapper")
+@SpringBootApplication
+@EnableConfigurationProperties({
+        FileUploadProperties.class
+})
 public class ProtestingApplication implements CommandLineRunner {
 
     @Autowired

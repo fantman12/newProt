@@ -1,10 +1,9 @@
 package com.protest.protesting.service;
 
-import com.protest.protesting.entity.QuestionnairesEntity;
-import com.protest.protesting.entity.VisitorEntity;
-import com.protest.protesting.entity.VisitorListEntity;
+import com.protest.protesting.entity.*;
 import com.protest.protesting.exception.BusinessException;
 import com.protest.protesting.exception.ErrorCode;
+import com.protest.protesting.mapper.CompaniesMapper;
 import com.protest.protesting.mapper.VisitorMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +21,32 @@ public class VisitorServiceImpl implements VisitorService {
     @Autowired
     VisitorMapper visitorMapper;
 
+    @Autowired
+    CompaniesMapper companiesMapper;
+
     @Override
     public Object insertVisitorInfo(VisitorEntity ve) {
+        VisitorEntity chkVisitor = null;
+        CompaniesEntity ce = null;
+        ce = companiesMapper.getCompanyInfo(ve.getCompanySeq());
+        if (ce == null) {
+            throw new BusinessException(ErrorCode.ERR_NOT_FOUND_COMPANY);
+        }
 
         try {
-            visitorMapper.addVisitorInfo(ve);
+            chkVisitor = visitorMapper.alreadyVisitorInfo(ve);
+            if (chkVisitor != null) {
+                visitorMapper.updateVisitorAt(chkVisitor);// 기존 Visitor 정보 존재시 시간 Update
+                chkVisitor = visitorMapper.getVisitor(chkVisitor.getSeq());
+            } else {
+                visitorMapper.addVisitorInfo(ve); // 기존 Visitor 정보 없을시 Insert
+                return visitorMapper.getVisitor(ve.getSeq());
+            }
         } catch (Exception e) {
             e.getStackTrace();
-
             throw new BusinessException(ErrorCode.VISITOR_INFO_INSERT_ERR);
         }
-        return true;
+        return chkVisitor;
     }
 
     @Override
@@ -53,8 +67,8 @@ public class VisitorServiceImpl implements VisitorService {
     }
 
     @Override
-    public List<VisitorEntity> getVisitorList(String startDate, String endDate, String keyword, int limit, int offset) {
-        return visitorMapper.getVisitorList(startDate, endDate, keyword, limit, offset);
+    public List<VisitorEntity> getVisitorList(String startDate, String endDate, String keyword, int limit, int offset, Integer companySeq) {
+        return visitorMapper.getVisitorList(startDate, endDate, keyword, limit, offset, companySeq);
     }
 
     @Override
@@ -62,8 +76,30 @@ public class VisitorServiceImpl implements VisitorService {
          return visitorMapper.getVisitor(targetSeq);
     }
 
+
     @Override
     public List<QuestionnairesEntity> getVisitorQuestion(int targetSeq) {
         return visitorMapper.getVisitorQuestion(targetSeq);
     }
+
+    @Override
+    public VisitorEntity updateVisitorQr(VisitorQrEntity visitorQrEntity) {
+        VisitorEntity ve = null;
+        try {
+            visitorMapper.updateVisitorQr(visitorQrEntity);
+            int targetSeq = visitorQrEntity.getSeq();
+            System.out.println(targetSeq);
+
+            ve = visitorMapper.getVisitor(targetSeq);
+            System.out.println(ve.getCreatedAt());
+            System.out.println(ve.getUpdatedAt());
+
+        } catch (Exception e) {
+            e.getStackTrace();
+            throw new BusinessException(ErrorCode.AGENT_QR_UPDATE_FAIL);
+        }
+
+        return ve;
+    }
+
 }

@@ -14,4 +14,5 @@ public class VisitorListEntity {
     private String keyword;
     private int limit;
     private int offset;
+    private int companySeq;
 }

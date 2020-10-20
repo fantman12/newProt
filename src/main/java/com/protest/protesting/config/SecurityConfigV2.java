@@ -37,7 +37,7 @@ public class SecurityConfigV2 extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        System.out.println("configure");
+        System.out.println("Configure Setting");
         http
                 .httpBasic().disable()
                 .csrf().disable()
@@ -47,6 +47,8 @@ public class SecurityConfigV2 extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").hasAuthority("ROLE_USER")
                 .antMatchers("/managers/**").hasAuthority("ROLE_USER")
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+
+//                .antMatchers("/faceone/qrCode").hasAuthority("ROLE_ADMIN") // faceOne Qr setting is AUTH Required
                 .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(authenticationManagerBean(), jwtUtils()),
