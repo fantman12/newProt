@@ -56,7 +56,7 @@ public class IamportController {
         String reqInfo = urlCode + "/" + reqNum + "/" + reqdate;
 
 //        String encReqInfo = mscr.msgEncrypt(reqInfo,"~/dreamsecurity/cert/cjexpressCert.der");			// 인증서 파일명, 경로
-        String encReqInfo = mscr.msgEncrypt(reqInfo,"~/dreamsecurity/cert/cjexpressCert.der");			// 인증서 파일명, 경로
+        String encReqInfo = mscr.msgEncrypt(reqInfo,"/home/ubuntu/dreamsecurity/cert/cjexpressCert.der");			// 인증서 파일명, 경로
         encReqInfo = URLEncoder.encode(encReqInfo);
 
         String url = "https://www.mobile-ok.com/popup/common/hscert.jsp";
@@ -74,7 +74,7 @@ public class IamportController {
 
         MsgCrypto mscr = new MsgCrypto();
 
-        String rstInfo = mscr.msgDecrypt(encPriInfo,"~/dreamsecurity/cert/cjexpressPri.key","88888888","EUC-KR");			// 키 파일명, 경로, 비밀번호
+        String rstInfo = mscr.msgDecrypt(encPriInfo,"/home/ubuntu/dreamsecurity/cert/cjexpressPri.key","88888888","EUC-KR");			// 키 파일명, 경로, 비밀번호
         String[] rstInfoArray = rstInfo.split("\\$");
 
         System.out.println("rstInfo : [" + rstInfo + "]");
