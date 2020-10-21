@@ -41,6 +41,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User readByUser(String username) {
+        return userMapper.readUser(username);
+    }
+
+    @Override
     public void createUser(User user) {
         String rawPassword = user.getPassword();
         String encodedPassword = new BCryptPasswordEncoder().encode(rawPassword);

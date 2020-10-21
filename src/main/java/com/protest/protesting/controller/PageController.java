@@ -124,6 +124,16 @@ public class PageController {
             throw new BusinessException(ErrorCode.USER_SIGN_UP_NOT_MATCH_PW);
         }
 
+        User selectByUser = null;
+        selectByUser = userService.readByUser(username);
+        if (selectByUser != null) {
+            throw new BusinessException(ErrorCode.USER_SIGN_UP_ALREADY);
+        }
+
+        // 회원가입 중복 username 체크
+//        if (selectByUser.getUsername().equals(username)) {
+//            throw new BusinessException(ErrorCode.USER_SIGN_UP_ALREADY);
+//        }
 
         user1 = new User();
         user1.setUsername(username);
