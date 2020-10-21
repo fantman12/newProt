@@ -46,7 +46,8 @@ public class IamportController {
         //reqNum은 최대 40byte 까지 사용 가능
         String reqNum = day + randomStr;
 //        String rtn_url = "http://dev.mobile-ok.com/popup/js_test03.jsp"; // dream_test03.jsp
-        String rtn_url = "http://localhost:8080/iamportReturn"; // dream_test03.jsp
+//        String rtn_url = "http://localhost:8080/iamportReturn"; // dream_test03.jsp
+        String rtn_url = "http://54.180.22.14/:8080/iamportReturn"; // dream_test03.jsp
         String urlCode = "01001";
         String cpId = "cjexpress";
 
