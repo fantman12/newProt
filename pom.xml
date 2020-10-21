@@ -21,7 +21,7 @@
         <repository>
             <id>WIN-RFNN346TU51</id>
             <name>WIN-RFNN346TU51-releases</name>
-            <url>http://10.10.10.72:9999/artifactory/dream-release-local</url>
+            <url>http://14.32.171.132:9999/artifactory/dream-release-local</url>
         </repository>
     </repositories>
 
