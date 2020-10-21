@@ -17,6 +17,13 @@
     <properties>
         <java.version>1.8</java.version>
     </properties>
+    <repositories>
+        <repository>
+            <id>WIN-RFNN346TU51</id>
+            <name>WIN-RFNN346TU51-releases</name>
+            <url>http://10.10.10.72:9999/artifactory/dream-release-local</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -164,13 +171,19 @@
             <version>2.7.5</version>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>dreamCrypto</groupId>-->
+<!--            <artifactId>dreamCrypto</artifactId>-->
+<!--            <version>1.4</version>-->
+<!--            <scope>system</scope>-->
+<!--            <systemPath>${project.basedir}/libs/dreamCrypto-1.4.jar</systemPath>-->
+<!--&lt;!&ndash;            <systemPath>/home/ubuntu/newProt/libs/dreamCrypto-1.4.jar</systemPath>&ndash;&gt;-->
+<!--        </dependency>-->
+
         <dependency>
-            <groupId>dreamCrypto</groupId>
+            <groupId>com.dreamsecurity</groupId>
             <artifactId>dreamCrypto</artifactId>
             <version>1.4</version>
-            <scope>system</scope>
-<!--            <systemPath>${project.basedir}/libs/dreamCrypto-1.4.jar</systemPath>-->
-            <systemPath>/home/ubuntu/newProt/libs/dreamCrypto-1.4.jar</systemPath>
         </dependency>
 
     </dependencies>

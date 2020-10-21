@@ -55,6 +55,7 @@ public class IamportController {
 
         String reqInfo = urlCode + "/" + reqNum + "/" + reqdate;
 
+//        String encReqInfo = mscr.msgEncrypt(reqInfo,"~/dreamsecurity/cert/cjexpressCert.der");			// 인증서 파일명, 경로
         String encReqInfo = mscr.msgEncrypt(reqInfo,"~/dreamsecurity/cert/cjexpressCert.der");			// 인증서 파일명, 경로
         encReqInfo = URLEncoder.encode(encReqInfo);
 
