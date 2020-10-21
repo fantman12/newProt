@@ -164,6 +164,14 @@
             <version>2.7.5</version>
         </dependency>
 
+        <dependency>
+            <groupId>dreamCrypto</groupId>
+            <artifactId>dreamCrypto</artifactId>
+            <version>1.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/dreamCrypto-1.4.jar</systemPath>
+        </dependency>
+
     </dependencies>
 
     <build>

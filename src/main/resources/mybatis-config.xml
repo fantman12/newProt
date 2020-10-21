@@ -18,5 +18,7 @@
         <typeAlias alias="QuestionPassEntity" type="com.protest.protesting.entity.QuestionPassEntity"/>
         <typeAlias alias="VisitorQrEntity" type="com.protest.protesting.entity.VisitorQrEntity"/>
         <typeAlias alias="CompaniesEntity" type="com.protest.protesting.entity.CompaniesEntity"/>
+        <typeAlias alias="IamportInformationEntity" type="com.protest.protesting.entity.IamportInformationEntity"/>
+
     </typeAliases>
 </configuration>
