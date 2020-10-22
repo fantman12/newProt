@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.protest.protesting.mapper.VisitorImagesMapper">
+    <insert id="insertVisitorImage" parameterType="S3Entity" useGeneratedKeys="true" keyProperty="seq">
+        INSERT INTO VISITOR_IMAGES (`visitor_seq`, `image_url`)
+        VALUES (#{visitor_seq}, #{image_url})
+    </insert>
+
+    <select id="getVisitorImage" parameterType="int" resultType="S3Entity">
+        SELECT * FROM
+        VISITOR_IMAGES
+        WHERE seq = #{targetSeq}
+    </select>
+</mapper>

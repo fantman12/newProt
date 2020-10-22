@@ -19,6 +19,7 @@
         <typeAlias alias="VisitorQrEntity" type="com.protest.protesting.entity.VisitorQrEntity"/>
         <typeAlias alias="CompaniesEntity" type="com.protest.protesting.entity.CompaniesEntity"/>
         <typeAlias alias="IamportInformationEntity" type="com.protest.protesting.entity.IamportInformationEntity"/>
+        <typeAlias alias="S3Entity" type="com.protest.protesting.entity.S3Entity"/>
 
     </typeAliases>
 </configuration>

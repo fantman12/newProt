@@ -47,6 +47,10 @@ public enum ErrorCode {
     // Company
     ERR_NOT_FOUND_COMPANY(400, "CO001", "기관 정보가 존재하지 않습니다."),
 
+    // S3 Image Error
+    ERR_S3_UPLOAD(400, "U001", "이미지 업로드에 실패하였습니다."),
+    ERR_S3_NOT_FOUND(400, "U002", "이미지 정보가 존재하지 않습니다."),
+
     ;
     private final String code;
     private final String message;
